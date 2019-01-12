@@ -1,6 +1,7 @@
 import React from 'react'
 import { graphql } from 'gatsby'
 import styled from 'styled-components'
+import Layout from '../components/layout'
 
 const Type = styled.div`
   position: absolute;
@@ -35,6 +36,8 @@ const Header = styled.div`
 `
 
 const Heading = styled.h2`
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
   background: rgb(69, 114, 192);
   padding: 20px;
   margin: 0 auto;
@@ -75,31 +78,33 @@ const Ingredient = styled.li``
 const Recipe = ({ data }) => {
   const { recipe } = data
   return (
-    <Wrapper>
-      <Header>
-        <Heading>{recipe.name}</Heading>
-        <Type>Dessert</Type>
-        <Image src={recipe.imageURL} />
-      </Header>
-      <Ingredients>
-        <h3>Ingredients</h3>
-        <ul>
-          {recipe.ingredients.map(({ name, quantity }) => (
-            <Ingredient>
-              {quantity} {name}
-            </Ingredient>
-          ))}
-        </ul>
-      </Ingredients>
-      <Instructions>
-        <h3>Instructions</h3>
-        <ul>
-          {recipe.steps.map((step, i) => (
-            <Step step={i + 1}>{step}</Step>
-          ))}
-        </ul>
-      </Instructions>
-    </Wrapper>
+    <Layout>
+      <Wrapper>
+        <Header>
+          <Heading>{recipe.name}</Heading>
+          <Type>Dessert</Type>
+          <Image src={recipe.imageURL} />
+        </Header>
+        <Ingredients>
+          <h3>Ingredients</h3>
+          <ul>
+            {recipe.ingredients.map(({ name, quantity }) => (
+              <Ingredient>
+                {quantity} {name}
+              </Ingredient>
+            ))}
+          </ul>
+        </Ingredients>
+        <Instructions>
+          <h3>Instructions</h3>
+          <ul>
+            {recipe.steps.map((step, i) => (
+              <Step step={i + 1}>{step}</Step>
+            ))}
+          </ul>
+        </Instructions>
+      </Wrapper>
+    </Layout>
   )
 }
 export const query = graphql`

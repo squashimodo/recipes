@@ -1,10 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { StaticQuery, graphql } from 'gatsby'
-
-import Header from './header'
 import './layout.css'
+import { Helmet } from 'react-helmet'
+import { createGlobalStyle } from 'styled-components'
 
+const GlobalStyles = createGlobalStyle`
+  body {
+    font-family: 'Open Sans';
+  }
+`
 const Layout = ({ children }) => (
   <StaticQuery
     query={graphql`
@@ -18,7 +23,13 @@ const Layout = ({ children }) => (
     `}
     render={data => (
       <>
-        <Header siteTitle={data.site.siteMetadata.title} />
+        <Helmet>
+          <link
+            href="https://fonts.googleapis.com/css?family=Alice|Open+Sans|Playfair+Display:400,700,900"
+            rel="stylesheet"
+          />
+        </Helmet>
+        <GlobalStyles />
         <div
           style={{
             margin: `0 auto`,
