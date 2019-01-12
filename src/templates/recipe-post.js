@@ -87,6 +87,7 @@ const Step = styled.li`
   padding-left: 45px;
   vertical-align: text-top;
   &:before {
+    line-height: 1;
     font-family: ${({ theme }) => theme.headingFont};
     margin-left: -45px;
     position: absolute;
