@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { StaticQuery, graphql } from 'gatsby'
 import './layout.css'
 import { Helmet } from 'react-helmet'
-import { createGlobalStyle } from 'styled-components'
-
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import theme from '../theme'
 const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Open Sans';
@@ -25,7 +25,7 @@ const Layout = ({ children }) => (
       <>
         <Helmet>
           <link
-            href="https://fonts.googleapis.com/css?family=Alice|Open+Sans|Playfair+Display:400,700,900"
+            href="https://fonts.googleapis.com/css?family=Alice|Open+Sans|Ovo|Playfair+Display:400,700,900"
             rel="stylesheet"
           />
         </Helmet>
@@ -38,7 +38,7 @@ const Layout = ({ children }) => (
             paddingTop: 0,
           }}
         >
-          {children}
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
           <footer>
             © {new Date().getFullYear()}, Built with
             {` `}

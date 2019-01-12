@@ -1,7 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { ThemeProvider } from 'styled-components'
-import theme from './theme'
 export default class HTML extends React.Component {
   render() {
     return (
@@ -15,17 +13,15 @@ export default class HTML extends React.Component {
           />
           {this.props.headComponents}
         </head>
-        <ThemeProvider theme={theme}>
-          <body {...this.props.bodyAttributes}>
-            {this.props.preBodyComponents}
-            <div
-              key={`body`}
-              id="___gatsby"
-              dangerouslySetInnerHTML={{ __html: this.props.body }}
-            />
-            {this.props.postBodyComponents}
-          </body>
-        </ThemeProvider>
+        <body {...this.props.bodyAttributes}>
+          {this.props.preBodyComponents}
+          <div
+            key={`body`}
+            id="___gatsby"
+            dangerouslySetInnerHTML={{ __html: this.props.body }}
+          />
+          {this.props.postBodyComponents}
+        </body>
       </html>
     )
   }

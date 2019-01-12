@@ -1,4 +1,4 @@
 export default {
-  headingFont: 'Playfair Display',
+  headingFont: 'Ovo',
   textFont: 'Open Sans',
 }

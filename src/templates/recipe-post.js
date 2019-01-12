@@ -14,11 +14,6 @@ const Type = styled.div`
   text-align: left;
 `
 const Ingredients = styled.div`
-  h3 {
-    font-family: ${({ theme }) => theme.headingFont};
-    text-align: center;
-    padding: 20px 0;
-  }
   ul {
     list-style: none;
   }
@@ -29,7 +24,9 @@ const Wrapper = styled.div`
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
 `
-const Image = styled.img``
+const Image = styled.img`
+  object-fit: cover;
+`
 const Header = styled.div`
   position: relative;
   display: flex;
@@ -39,7 +36,7 @@ const Header = styled.div`
 `
 
 const Heading = styled.h2`
-  font-family: 'Playfair Display', serif;
+  font-family: ${({ theme }) => theme.headingFont};
   font-weight: 700;
   background: rgb(69, 114, 192);
   padding: 20px;
@@ -52,17 +49,37 @@ const Heading = styled.h2`
   bottom: 0;
 `
 
+const LineHeader = styled.h3`
+  font-family: ${({ theme }) => theme.headingFont};
+  text-align: center;
+  padding: 50px 0;
+
+  display: flex;
+  width: 90%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+
+  &:before,
+  &:after {
+    content: '';
+    border-top: 2px solid #f1f1f1;
+    margin: 0 20px 0 0;
+    flex: 1 0 20px;
+  }
+
+  &:after {
+    margin: 0 0 0 20px;
+  }
+`
 const Instructions = styled.div`
   ul {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px 50px;
   }
-  h3 {
-    font-family: ${({ theme }) => theme.headingFont};
-    text-align: center;
-    padding: 20px 0;
-  }
+
   ul {
     list-style: none;
   }
@@ -92,20 +109,22 @@ const Recipe = ({ data }) => {
           <Image src={recipe.imageURL} />
         </Header>
         <Ingredients>
-          <h3>Ingredients</h3>
+          <LineHeader>Ingredients</LineHeader>
           <ul>
             {recipe.ingredients.map(({ name, quantity }) => (
-              <Ingredient>
+              <Ingredient key={name}>
                 {quantity} {name}
               </Ingredient>
             ))}
           </ul>
         </Ingredients>
         <Instructions>
-          <h3>Instructions</h3>
+          <LineHeader>Instructions</LineHeader>
           <ul>
             {recipe.steps.map((step, i) => (
-              <Step step={i + 1}>{step}</Step>
+              <Step key={step} step={i + 1}>
+                {step}
+              </Step>
             ))}
           </ul>
         </Instructions>

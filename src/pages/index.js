@@ -15,7 +15,7 @@ const IndexPage = ({ data }) => (
       <Image />
     </div>
     {data.allSitePage.edges.map(({ node }) => (
-      <Link style={{ display: 'block' }} to={node.path}>
+      <Link key={node.id} style={{ display: 'block' }} to={node.path}>
         {node.context.name}
       </Link>
     ))}
@@ -28,6 +28,7 @@ export const query = graphql`
       edges {
         node {
           path
+          id
           context {
             name
           }
