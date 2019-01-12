@@ -16,6 +16,7 @@ const Type = styled.div`
 const Ingredients = styled.div`
   ul {
     list-style: none;
+    padding: 0 30px;
   }
 `
 const Wrapper = styled.div`
@@ -78,9 +79,7 @@ const Instructions = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px 50px;
-  }
-
-  ul {
+    padding: 0 30px;
     list-style: none;
   }
 `

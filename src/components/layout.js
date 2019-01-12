@@ -9,6 +9,10 @@ const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Open Sans';
   }
+
+  ul {
+    margin: 0; 
+  }
 `
 const Layout = ({ children }) => (
   <StaticQuery
