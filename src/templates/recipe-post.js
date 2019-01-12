@@ -2,7 +2,7 @@ import React from 'react'
 import { graphql } from 'gatsby'
 import styled from 'styled-components'
 import Layout from '../components/layout'
-
+import Image from 'gatsby-image'
 const Type = styled.div`
   position: absolute;
   left: 0;
@@ -15,7 +15,6 @@ const Type = styled.div`
 `
 const Ingredients = styled.div`
   ul {
-    list-style: none;
     padding: 0 30px;
   }
 `
@@ -24,10 +23,12 @@ const Wrapper = styled.div`
   max-width: 1024px;
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
+
+  ul {
+    list-style: none;
+  }
 `
-const Image = styled.img`
-  object-fit: cover;
-`
+
 const Header = styled.div`
   position: relative;
   display: flex;
@@ -80,7 +81,6 @@ const Instructions = styled.div`
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px 50px;
     padding: 0 30px;
-    list-style: none;
   }
 `
 const Step = styled.li`
@@ -106,13 +106,13 @@ const Recipe = ({ data }) => {
         <Header>
           <Heading>{recipe.name}</Heading>
           <Type>Dessert</Type>
-          <Image src={recipe.imageURL} />
+          <Image fluid={recipe.localImage.childImageSharp.fluid} />
         </Header>
         <Ingredients>
           <LineHeader>Ingredients</LineHeader>
           <ul>
             {recipe.ingredients.map(({ name, quantity }) => (
-              <Ingredient key={name}>
+              <Ingredient key={quantity + name}>
                 {quantity} {name}
               </Ingredient>
             ))}
@@ -122,7 +122,7 @@ const Recipe = ({ data }) => {
           <LineHeader>Instructions</LineHeader>
           <ul>
             {recipe.steps.map((step, i) => (
-              <Step key={step} step={i + 1}>
+              <Step key={i + step} step={i + 1}>
                 {step}
               </Step>
             ))}
@@ -137,6 +137,14 @@ export const query = graphql`
     recipe: recipesJson(id: { eq: $id }) {
       id
       name
+      localImage {
+        id
+        childImageSharp {
+          fluid(maxWidth: 1024) {
+            ...GatsbyImageSharpFluid
+          }
+        }
+      }
       ingredients {
         quantity
         name

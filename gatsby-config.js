@@ -15,6 +15,7 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -23,6 +24,13 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-remote-images`,
+      options: {
+        nodeType: 'RecipesJson',
+        imagePath: 'imageURL',
+      },
+    },
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
