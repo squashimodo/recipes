@@ -28,13 +28,13 @@ exports.createPages = ({ graphql, actions }) => {
       }
     `
   ).then(result => {
-    console.log('hej')
-    console.log(result)
     result.data.allRecipesJson.edges.forEach(edge => {
       createPage({
         path: slugify(edge.node.name),
         component: recipeTemplate,
         context: {
+          type: 'recipe',
+          name: edge.node.name,
           id: edge.node.id,
         },
       })
