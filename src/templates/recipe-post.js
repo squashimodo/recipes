@@ -8,12 +8,16 @@ const Type = styled.div`
   left: 0;
   top: 0;
   z-index: 1;
-  padding: 5px 10px;
+  padding: 5px 60px 5px 1.45rem;
   background: rgb(69, 114, 192);
+  color: white;
+  text-align: left;
 `
 const Ingredients = styled.div`
   h3 {
+    font-family: ${({ theme }) => theme.headingFont};
     text-align: center;
+    padding: 20px 0;
   }
   ul {
     list-style: none;
@@ -24,7 +28,6 @@ const Wrapper = styled.div`
   max-width: 1024px;
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
-  padding: 0 10px;
 `
 const Image = styled.img``
 const Header = styled.div`
@@ -56,7 +59,9 @@ const Instructions = styled.div`
     grid-gap: 30px 50px;
   }
   h3 {
+    font-family: ${({ theme }) => theme.headingFont};
     text-align: center;
+    padding: 20px 0;
   }
   ul {
     list-style: none;
@@ -66,6 +71,7 @@ const Step = styled.li`
   padding-left: 45px;
   vertical-align: text-top;
   &:before {
+    font-family: ${({ theme }) => theme.headingFont};
     margin-left: -45px;
     position: absolute;
     content: '${({ step }) => step}';
