@@ -15,7 +15,7 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-
+    `gatsby-plugin-transition-link`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {

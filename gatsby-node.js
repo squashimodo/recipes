@@ -7,7 +7,17 @@ import { graphql } from 'gatsby';
 const recipes = require('./src/data/recipes.json')
 const path = require('path')
 const slugify = require('slugify')
-// You can delete this file if you're not using it
+
+exports.onCreateNode = ({ node, actions }) => {
+  const { createNodeField } = actions
+  if (node.internal.type === 'RecipesJson') {
+    createNodeField({
+      node,
+      name: `slug`,
+      value: slugify(node.name),
+    })
+  }
+}
 
 exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions

@@ -1,8 +1,10 @@
 import React from 'react'
 import { graphql } from 'gatsby'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Layout from '../components/layout'
 import Image from 'gatsby-image'
+import AniLink from 'gatsby-plugin-transition-link/AniLink'
+
 const Type = styled.div`
   position: absolute;
   left: 0;
@@ -40,7 +42,7 @@ const Header = styled.div`
 const Heading = styled.h2`
   font-family: ${({ theme }) => theme.headingFont};
   font-weight: 700;
-  background: rgb(69, 114, 192);
+  background: #4572c0;
   padding: 20px;
   margin: 0 auto;
   color: white;
@@ -98,13 +100,58 @@ const Step = styled.li`
   }
 `
 const Ingredient = styled.li``
+
+const randomItem = items => {
+  return items[Math.floor(Math.random() * items.length)]
+}
+
+const shake = keyframes`
+
+  49% { transform: translate(0) rotate(0); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(0) rotate(0); }
+
+`
+const RandomLink = styled(AniLink)`
+  padding: 20px 30px;
+  background: #4572c0;
+  position: absolute;
+  color: white;
+  text-decoration: none;
+  right: -70px;
+  top: 50px;
+  z-index: -1;
+
+  transition: 0.2s right ease;
+  animation: ${shake} 3s infinite;
+  animation-delay: 3s;
+  &:hover {
+    animation: none;
+    right: -160px;
+  }
+`
 const Recipe = ({ data }) => {
   const { recipe } = data
+  console.log(recipe)
   return (
     <Layout>
       <Wrapper>
+        <RandomLink
+          paintDrip
+          hex="#4572c0"
+          down
+          to={`${randomItem(
+            data.allRecipes.edges.map(e => e.node.fields.slug)
+          )}`}
+        >
+          Pick another
+        </RandomLink>
         <Header>
-          <Heading>{recipe.name}</Heading>
+          <Heading>{recipe.name} - </Heading>
           <Type>Dessert</Type>
           <Image fluid={recipe.localImage.childImageSharp.fluid} />
         </Header>
@@ -134,6 +181,15 @@ const Recipe = ({ data }) => {
 }
 export const query = graphql`
   query recipeQuery($id: String!) {
+    allRecipes: allRecipesJson {
+      edges {
+        node {
+          fields {
+            slug
+          }
+        }
+      }
+    }
     recipe: recipesJson(id: { eq: $id }) {
       id
       name
