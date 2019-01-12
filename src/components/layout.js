@@ -42,7 +42,9 @@ const Layout = ({ children }) => (
             paddingTop: 0,
           }}
         >
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <>{children}</>
+          </ThemeProvider>
           <footer>
             © {new Date().getFullYear()}, Built with
             {` `}
