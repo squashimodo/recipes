@@ -7,9 +7,11 @@ import { graphql } from 'gatsby';
 const recipes = require('./src/data/recipes.json')
 const path = require('path')
 const slugify = require('slugify')
+const Vibrant = require('node-vibrant')
 
-exports.onCreateNode = ({ node, actions }) => {
+exports.onCreateNode = async ({ node, actions }) => {
   const { createNodeField } = actions
+
   if (node.internal.type === 'RecipesJson') {
     createNodeField({
       node,
@@ -19,11 +21,9 @@ exports.onCreateNode = ({ node, actions }) => {
   }
 }
 
-exports.createPages = ({ graphql, actions }) => {
+exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const recipeTemplate = path.resolve(`src/templates/recipe-post.js`)
-  console.log(recipes.length)
-
   return graphql(
     `
       {
@@ -32,22 +32,40 @@ exports.createPages = ({ graphql, actions }) => {
             node {
               id
               name
+              localImage {
+                absolutePath
+              }
             }
           }
         }
       }
     `
-  ).then(result => {
-    result.data.allRecipesJson.edges.forEach(edge => {
-      createPage({
-        path: slugify(edge.node.name),
-        component: recipeTemplate,
-        context: {
-          type: 'recipe',
-          name: edge.node.name,
-          id: edge.node.id,
-        },
-      })
+  )
+    .then(result => {
+      Promise.all(
+        result.data.allRecipesJson.edges.map(edge => {
+          return Vibrant.from(edge.node.localImage.absolutePath)
+            .getPalette()
+            .then(result => {
+              return createPage({
+                path: slugify(edge.node.name),
+                component: recipeTemplate,
+                context: {
+                  type: 'recipe',
+                  name: edge.node.name,
+                  id: edge.node.id,
+                  color: Object.keys(result).reduce(
+                    (obj, curr) => ({
+                      ...obj,
+                      [curr]: result[curr].hex,
+                    }),
+                    {}
+                  ),
+                },
+              })
+            })
+        })
+      )
     })
-  })
+    .catch(e => console.error(e))
 }
