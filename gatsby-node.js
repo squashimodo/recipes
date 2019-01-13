@@ -4,7 +4,6 @@ import { graphql } from 'gatsby';
  *
  * See: https://www.gatsbyjs.org/docs/node-apis/
  */
-const recipes = require('./src/data/recipes.json')
 const path = require('path')
 const slugify = require('slugify')
 const Vibrant = require('node-vibrant')
@@ -24,7 +23,7 @@ exports.onCreateNode = async ({ node, actions }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const recipeTemplate = path.resolve(`src/templates/recipe-post.js`)
-  return graphql(
+  const result = await graphql(
     `
       {
         allRecipesJson {
@@ -41,31 +40,28 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     `
   )
-    .then(result => {
-      Promise.all(
-        result.data.allRecipesJson.edges.map(edge => {
-          return Vibrant.from(edge.node.localImage.absolutePath)
-            .getPalette()
-            .then(result => {
-              return createPage({
-                path: slugify(edge.node.name),
-                component: recipeTemplate,
-                context: {
-                  type: 'recipe',
-                  name: edge.node.name,
-                  id: edge.node.id,
-                  color: Object.keys(result).reduce(
-                    (obj, curr) => ({
-                      ...obj,
-                      [curr]: result[curr].hex,
-                    }),
-                    {}
-                  ),
-                },
-              })
-            })
-        })
-      )
+
+  return Promise.all(
+    result.data.allRecipesJson.edges.map(async edge => {
+      const colors = await Vibrant.from(
+        edge.node.localImage.absolutePath
+      ).getPalette()
+      return createPage({
+        path: slugify(edge.node.name),
+        component: recipeTemplate,
+        context: {
+          type: 'recipe',
+          name: edge.node.name,
+          id: edge.node.id,
+          color: Object.keys(colors).reduce(
+            (obj, curr) => ({
+              ...obj,
+              [curr]: colors[curr].hex,
+            }),
+            {}
+          ),
+        },
+      })
     })
-    .catch(e => console.error(e))
+  )
 }
