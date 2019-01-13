@@ -5,9 +5,11 @@ import './layout.css'
 import { Helmet } from 'react-helmet'
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import theme from '../theme'
+import Background from './background'
 const GlobalStyles = createGlobalStyle`
   body {
     font-family: 'Open Sans';
+    ${Background}
   }
 
   ul {

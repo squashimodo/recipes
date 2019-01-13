@@ -25,10 +25,8 @@ const Wrapper = styled.div`
   max-width: 1024px;
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
   margin: 0 auto;
-
-  ul {
-    list-style: none;
-  }
+  background: white;
+  padding-bottom: 50px;
 `
 
 const Header = styled.div`
@@ -83,6 +81,7 @@ const Instructions = styled.div`
     grid-template-columns: 1fr 1fr;
     grid-gap: 30px 50px;
     padding: 0 30px;
+    list-style: none;
   }
 `
 const Step = styled.li`
@@ -94,7 +93,7 @@ const Step = styled.li`
     margin-left: -45px;
     position: absolute;
     content: '${({ step }) => step}';
-    color: rgb(179,192,238);
+    color: ${({ stepColor }) => stepColor};
     font-size: 40px;
     vertical-align: text-top;
   }
@@ -149,6 +148,7 @@ const Recipe = ({ data, pageContext }) => {
     DarkMuted
    */
   const backgroundColor = pageContext.color.DarkVibrant
+  const lightBackgroundColor = pageContext.color.LightVibrant
   return (
     <Layout>
       <Wrapper>
@@ -156,7 +156,6 @@ const Recipe = ({ data, pageContext }) => {
           paintDrip
           hex={backgroundColor}
           background={backgroundColor}
-          down
           to={`${randomItem(
             data.allRecipes.edges.map(e => e.node.fields.slug)
           )}`}
@@ -182,7 +181,11 @@ const Recipe = ({ data, pageContext }) => {
           <LineHeader>Instructions</LineHeader>
           <ul>
             {recipe.steps.map((step, i) => (
-              <Step key={i + step} step={i + 1}>
+              <Step
+                stepColor={lightBackgroundColor}
+                key={i + step}
+                step={i + 1}
+              >
                 {step}
               </Step>
             ))}
