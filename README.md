@@ -8,4 +8,6 @@
   Recipes
 </h1>
 
+Playing around with [Gatsby](https://www.gatsbyjs.org/)
+
 💫 Deploys to https://hungry-jang-1dcee1.netlify.com
